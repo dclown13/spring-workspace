@@ -39,26 +39,6 @@ public class SampleServiceTest {
 //		log.info(service.doAdd("123", "ABC"));
 //	}
 	
-	@Around("execution(* com.kh.service.SampleService*.*(..))")
-	public Object logTime(ProceedingJoinPoint joinPoint) {
-		long start = System.currentTimeMillis();
-		
-		log.info("Target : " + joinPoint.getTarget());
-		log.info("Param : " + Arrays.toString(joinPoint.getArgs()));
-		
-		Object result = null;
-		
-		try {
-			result = joinPoint.proceed();
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		
-		long end = System.currentTimeMillis();
-		
-		log.info("TIME : " + (end - start) + "ms");
-		
-		return result;
-	}
+
 	
 }
