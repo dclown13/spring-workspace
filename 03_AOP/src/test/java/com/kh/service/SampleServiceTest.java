@@ -1,5 +1,9 @@
 package com.kh.service;
 
+import java.util.Arrays;
+
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,34 @@ public class SampleServiceTest {
 	@Test
 	public void testAdd() throws Exception {
 		log.info(service.doAdd("123", "456"));
+	}
+
+	// 오류 출력용
+//	@Test
+//	public void testAddError() throws Exception {
+//		log.info(service.doAdd("123", "ABC"));
+//	}
+	
+	@Around("execution(* com.kh.service.SampleService*.*(..))")
+	public Object logTime(ProceedingJoinPoint joinPoint) {
+		long start = System.currentTimeMillis();
+		
+		log.info("Target : " + joinPoint.getTarget());
+		log.info("Param : " + Arrays.toString(joinPoint.getArgs()));
+		
+		Object result = null;
+		
+		try {
+			result = joinPoint.proceed();
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		
+		long end = System.currentTimeMillis();
+		
+		log.info("TIME : " + (end - start) + "ms");
+		
+		return result;
 	}
 	
 }
