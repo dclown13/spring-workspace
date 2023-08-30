@@ -1,5 +1,10 @@
 package com.kh.mvc.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,14 +25,20 @@ public class MemberController {
 	}
 	
 	@RequestMapping("find")
-	public String find(String keyword) {
-		System.out.println(keyword);
+	public String find(String keyword, Model model) {
 		// 서비스 - 비즈니스 로직 처리!
 		// --> list 값! 데이터 바인딩 -> Model!
 		// Model.addAttribute("list", list);
 		
-		return "find_ok"; // "find_fail"
+		List<Member> list = service.findMember(keyword);
+		if(list.size() > 0) {
+			model.addAttribute("list", list);
+			return "find_ok";
+		}
+		
+		return "find_fail"; //find_fail"
 	}
+
 	
 	@RequestMapping("register")
 	public String register() {
@@ -38,6 +49,7 @@ public class MemberController {
 	public String signUp(Member member) {
 		System.out.println(member);
 		// 비즈니스 로직
+		service.registerMember(member);
 		return "redirect:/";
 	}
 	
@@ -48,16 +60,54 @@ public class MemberController {
 	}
 	
 	// signIn 비즈니스 로직 포함 : 파라미터 값 -> HttpServletRequest request
-	
+	@RequestMapping("signIn")
+	public String signIn(Member vo, HttpSession session) {
+		Member member = service.login(vo);
+		
+		if(member != null) {
+			session.setAttribute("vo", member);
+		}
+		return "login_result";
+	}
 	
 	
 	// allMember - 비즈니스 로직 포함, 데이터 바인딩 - Model
 	// -> return "find_ok";
+	@RequestMapping("allMember")
+	public String allMember(Model model) {
+		List<Member> list = service.showAllMember();
+		model.addAttribute("list", list);
+		return "find_ok";
+	}
+	
 
 	// logout - 로그아웃 기능!
+	@RequestMapping("logout")
+	public String logout(HttpSession session) {
+		if(session.getAttribute("vo")!=null) {
+			session.invalidate();
+		}
+		return "redirect:/";
+	}
+	
 	
 	// update - 페이지 이동
+	@RequestMapping("update")
+	public String update() {
+		return "update";
+	}
+	
 	
 	// updateMember - 비즈니스 로직 포함 -> 파라미터 request 필요
+	@RequestMapping("updateMember")
+	public String updateMember(Member vo, HttpSession session) {
+		service.updateMember(vo);
+		if(session.getAttribute("vo")!=null) {
+			session.setAttribute("vo", vo);
+		}
+		return "redirect:/";
+	}
+	
+	
 	
 }
