@@ -10,7 +10,7 @@
 
 <img src="https://user-images.githubusercontent.com/26870393/182376640-202a56b6-f396-464f-b4dc-6075b0b824d4.png">
 
-- DispatcherSerclet : 사용자의 요청을 받는 프론트 컨트롤러 서블릿
+- DispatcherServlet : 사용자의 요청을 받는 프론트 컨트롤러 서블릿
 - HandlerMapping : 요청 URL을 바탕으로 적절한 컨트롤러를 선택하는 역할
 - Controller : 요청을 처리하기 위한 빈 (클라이언트의 요청을 처리 후 반환한다)
 - ViewResolver : DispatcherServlet에서 전달해 주는 뷰의 이름과 실제로 구현된 뷰를 매핑
