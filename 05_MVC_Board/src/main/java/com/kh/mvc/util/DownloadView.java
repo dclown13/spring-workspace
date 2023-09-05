@@ -34,14 +34,16 @@ public class DownloadView extends AbstractView {
 		response.setHeader("Content-Transfer-encoding", "binary");
 		
 		// 실제 업로드 파일을 inputStream으로 읽어서
-		// response에 연결된 outputStream으로 전송하겠다.
+		// response에 연결된 outputStream으로 전송하겠다
 		OutputStream os = response.getOutputStream();
 		FileInputStream fis = new FileInputStream(file);
 		FileCopyUtils.copy(fis, os);
 		
-		
 	}
-	
-	
-	
+
 }
+
+
+
+
+

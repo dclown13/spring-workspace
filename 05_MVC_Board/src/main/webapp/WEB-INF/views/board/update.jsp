@@ -15,7 +15,6 @@ pageEncoding="UTF-8"%>
       h1 {
         margin-top: 70px;
       }
-      
       .form-group {
         margin: 20px 0;
       }
